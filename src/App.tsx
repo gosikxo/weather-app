@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import WeatherByHour from "./components/WeatherByHour";
@@ -8,6 +8,16 @@ import LocationAndDate from './components/LocationAndDate';
 import CurrentStats from './components/CurrentStats';
 
 function App() {
+  const [weather, setWeather] = useState<{temperature: number} | null>(null)
+
+  useEffect(() => {
+    fetch("https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7&appid=63720269397e341964deae216e3952b5")
+    .then(res => res.json())
+    .then(res => {
+      setWeather({temperature: res.current.temp})
+    })
+  }, [])
+
   return (
     <main className="main-container">
 
@@ -16,7 +26,7 @@ function App() {
     </div>
   
     <div className="current-temperature">
-      <CurrentTemperature weatherType="mostly-sunny" temperature={20} sunny="Mostly Sunny"/>
+      <CurrentTemperature weatherType="mostly-sunny" temperature={weather?.temperature ?? 0} sunny="Mostly Sunny"/>
     </div>
   
   
