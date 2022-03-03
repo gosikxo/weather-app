@@ -3,47 +3,25 @@ import logo from './logo.svg';
 import './App.css';
 import WeatherByHour from "./components/WeatherByHour";
 import Next5Days from "./components/Next5Days";
+import CurrentTemperature from './components/CurrentTemperature';
+import LocationAndDate from './components/LocationAndDate';
+import CurrentStats from './components/CurrentStats';
 
 function App() {
   return (
     <main className="main-container">
 
     <div className="location-and-date">
-      <h1 className="location-and-date__location">London, UK</h1>
-      <div>Sunday 4th August</div>
+      <LocationAndDate location='London, UK' date='Sunday 4th August' />
     </div>
   
-  
     <div className="current-temperature">
-      <div className="current-temperature__icon-container">
-        <img src="icons/mostly-sunny.svg" className="current-temperature__icon" alt="" />
-      </div>
-      <div className="current-temperature__content-container">
-        <div className="current-temperature__value">21&deg;</div>
-        <div className="current-temperature__summary">Mostly Sunny</div>
-      </div>
+      <CurrentTemperature weatherType="mostly-sunny" temperature={20} sunny="Mostly Sunny"/>
     </div>
   
   
     <div className="current-stats">
-      <div>
-        <div className="current-stats__value">23&deg;</div>
-        <div className="current-stats__label">High</div>
-        <div className="current-stats__value">14&deg;</div>
-        <div className="current-stats__label">Low</div>
-      </div>
-      <div>
-        <div className="current-stats__value">7mph</div>
-        <div className="current-stats__label">Wind</div>
-        <div className="current-stats__value">0%</div>
-        <div className="current-stats__label">Rain</div>
-      </div>
-      <div>
-        <div className="current-stats__value">05:27</div>
-        <div className="current-stats__label">Sunrise</div>
-        <div className="current-stats__value">20:57</div>
-        <div className="current-stats__label">Sunset</div>
-      </div>
+      <CurrentStats temperatureHigh={23} temperatureLow={14} windSpeed={7} chanceOfRain={20} sunrise={"5:42"} sunset={"20:16"}/>
     </div>
   
     <div className="weather-by-hour">
@@ -61,7 +39,11 @@ function App() {
     <div className="next-5-days">
       <h2 className="next-5-days__heading">Next 5 days</h2>
       <div className="next-5-days__container">
-        <Next5Days date='30/7' day='Tue' temperatureInCelsius={14} chanceOfRain={0}/>
+        <Next5Days date='30/7' day='Tue' weatherType="mostly-sunny" temperatureInCelsiusLow={14} temperatureInCelsiusHigh={16} chanceOfRain={0} windSpeed={14}/>
+        <Next5Days date='31/7' day='Wed' weatherType="sunny" temperatureInCelsiusLow={16} temperatureInCelsiusHigh={18} chanceOfRain={20} windSpeed={16}/>
+        <Next5Days date='1/8' day='Thu' weatherType="mostly-sunny" temperatureInCelsiusLow={4} temperatureInCelsiusHigh={9} chanceOfRain={31} windSpeed={64}/>
+        <Next5Days date='2/8' day='Fri' weatherType="mostly-sunny" temperatureInCelsiusLow={14} temperatureInCelsiusHigh={16}chanceOfRain={100} windSpeed={53}/>
+        <Next5Days date='3/8' day='Sat' weatherType="sunny" temperatureInCelsiusLow={15} temperatureInCelsiusHigh={20} chanceOfRain={0} windSpeed={2}/>
       </div>
     </div>
   

@@ -8,7 +8,7 @@ function WeatherTypeIcon(props:{weatherType: WeatherType}) {
   
 }
 
-export default function Next5Days(props: {date:string, day: string, temperatureInCelsius: number, chanceOfRain: number}) {
+export default function Next5Days(props: {date:string, day: string, temperatureInCelsiusLow: number, temperatureInCelsiusHigh: number, chanceOfRain: number, weatherType: WeatherType, windSpeed: number}) {
     return (
         <><div className="next-5-days__row">
 
@@ -17,18 +17,18 @@ export default function Next5Days(props: {date:string, day: string, temperatureI
                 <div className="next-5-days__label">{props.date}</div>
             </div>
 
+            <div className="next-5-days__icon">
+                <WeatherTypeIcon weatherType={props.weatherType}/>
+            </div>
+
             <div className="next-5-days__low">
-                {props.temperatureInCelsius}&deg;
+                {props.temperatureInCelsiusLow}&deg;
                 <div className="next-5-days__label">Low</div>
             </div>
 
             <div className="next-5-days__high">
-                {props.temperatureInCelsius}&deg;
+                {props.temperatureInCelsiusHigh}&deg;
                 <div className="next-5-days__label">High</div>
-            </div>
-
-            <div className="next-5-days__icon">
-                <img src="icons/sunny.svg" alt="Sunny" />
             </div>
 
             <div className="next-5-days__rain">
@@ -37,133 +37,10 @@ export default function Next5Days(props: {date:string, day: string, temperatureI
             </div>
 
             <div className="next-5-days__wind">
-                12mph
+                {props.windSpeed}mph
                 <div className="next-5-days__label">Wind</div>
             </div>
 
-        </div><div className="next-5-days__row">
-
-                <div className="next-5-days__date">
-                    {props.day}
-                    <div className="next-5-days__label">{props.date}</div>
-                </div>
-
-                <div className="next-5-days__low">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">Low</div>
-                </div>
-
-                <div className="next-5-days__high">
-                  {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">High</div>
-                </div>
-
-                <div className="next-5-days__icon">
-                    <img src="icons/mostly-sunny.svg" alt="Mostly sunny" />
-                </div>
-
-                <div className="next-5-days__rain">
-                    3%
-                    <div className="next-5-days__label">Rain</div>
-                </div>
-
-                <div className="next-5-days__wind">
-                    7mph
-                    <div className="next-5-days__label">Wind</div>
-                </div>
-
-            </div><div className="next-5-days__row">
-
-                <div className="next-5-days__date">
-                    {props.day}
-                    <div className="next-5-days__label">{props.date}</div>
-                </div>
-
-                <div className="next-5-days__low">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">Low</div>
-                </div>
-
-                <div className="next-5-days__high">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">High</div>
-                </div>
-
-                <div className="next-5-days__icon">
-                    <img src="icons/mostly-sunny.svg" alt="Mostly sunny" />
-                </div>
-
-                <div className="next-5-days__rain">
-                    75%
-                    <div className="next-5-days__label">Rain</div>
-                </div>
-
-                <div className="next-5-days__wind">
-                    11mph
-                    <div className="next-5-days__label">Wind</div>
-                </div>
-
-            </div><div className="next-5-days__row">
-
-                <div className="next-5-days__date">
-                    {props.day}
-                    <div className="next-5-days__label">{props.date}</div>
-                </div>
-
-                <div className="next-5-days__low">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">Low</div>
-                </div>
-
-                <div className="next-5-days__high">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">High</div>
-                </div>
-
-                <div className="next-5-days__icon">
-                    <img src="icons/sunny.svg" alt="Sunny" />
-                </div>
-
-                <div className="next-5-days__rain">
-                    2%
-                    <div className="next-5-days__label">Rain</div>
-                </div>
-
-                <div className="next-5-days__wind">
-                    8mph
-                    <div className="next-5-days__label">Wind</div>
-                </div>
-
-            </div><div className="next-5-days__row">
-
-                <div className="next-5-days__date">
-                    {props.day}
-                    <div className="next-5-days__label">{props.date}</div>
-                </div>
-
-                <div className="next-5-days__low">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">Low</div>
-                </div>
-
-                <div className="next-5-days__high">
-                    {props.temperatureInCelsius}&deg;
-                    <div className="next-5-days__label">High</div>
-                </div>
-
-                <div className="next-5-days__icon">
-                    <img src="icons/mostly-sunny.svg" alt="Mostly sunny" />
-                </div>
-
-                <div className="next-5-days__rain">
-                    0%
-                    <div className="next-5-days__label">Rain</div>
-                </div>
-
-                <div className="next-5-days__wind">
-                    12mph
-                    <div className="next-5-days__label">Wind</div>
-                </div>
-            </div></>
+        </div></>
     )
 }
