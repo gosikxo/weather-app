@@ -7,16 +7,38 @@ import CurrentTemperature from './components/CurrentTemperature';
 import LocationAndDate from './components/LocationAndDate';
 import CurrentStats from './components/CurrentStats';
 
+function epochToIsoDate(epoch: number): Date {
+  return new Date(epoch*1000);
+}
+
+function formatDate(date: Date): string {
+  return `${date.getHours()}:${date.getMinutes()}`
+}
+
 function App() {
-  const [weather, setWeather] = useState<{temperature: number} | null>(null)
+  const [weather, setWeather] = useState<{temperature: number, windSpeed: number, sunriseTime: Date, sunsetTime: Date, uvIndex: number, humidity: number, feelsLike: number} | null>(null)
 
   useEffect(() => {
     fetch("https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7&appid=63720269397e341964deae216e3952b5")
     .then(res => res.json())
     .then(res => {
-      setWeather({temperature: res.current.temp})
+      setWeather({...res, 
+        temperature: res.current.temp, 
+        windSpeed: res.current.wind_speed, 
+        sunriseTime: epochToIsoDate(res.current.sunrise),
+        sunsetTime: epochToIsoDate(res.current.sunset),
+        uvIndex: res.current.uvi,
+        humidity: res.current.humidity,
+        feelsLike: res.current.feels_like
+      })
     })
-  }, [])
+  }, []);
+
+  if(weather == null) {
+    return <div>Loading...</div>
+  }
+
+  console.log(weather);
 
   return (
     <main className="main-container">
@@ -26,12 +48,12 @@ function App() {
     </div>
   
     <div className="current-temperature">
-      <CurrentTemperature weatherType="mostly-sunny" temperature={weather?.temperature ?? 0} sunny="Mostly Sunny"/>
+      <CurrentTemperature weatherType="mostly-sunny" temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny"/>
     </div>
   
   
     <div className="current-stats">
-      <CurrentStats temperatureHigh={23} temperatureLow={14} windSpeed={7} chanceOfRain={20} sunrise={"5:42"} sunset={"20:16"}/>
+      <CurrentStats uvIndex={weather.uvIndex} humidity={weather.humidity} windSpeed={weather.windSpeed} feelsLike={weather.feelsLike.toFixed(1)} sunrise={formatDate(weather.sunriseTime)} sunset={formatDate(weather.sunsetTime)}/>
     </div>
   
     <div className="weather-by-hour">

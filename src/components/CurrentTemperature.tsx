@@ -8,7 +8,7 @@ function WeatherTypeIcon(props:{weatherType: WeatherType}) {
   
 }
 
-export default function CurrentTemperature(props: {weatherType: WeatherType, temperature: number, sunny: string}) {
+export default function CurrentTemperature(props: {weatherType: WeatherType, temperature: string, sunny: string}) {
     return (
       <>
       <div className="current-temperature__icon-container">
