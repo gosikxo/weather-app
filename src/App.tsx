@@ -29,6 +29,7 @@ type Weather = {
 
 function App() {
   const [weather, setWeather] = useState<Weather | null>(null)
+  const [cities, setCities] = useState<Array<{id: number, name: string, latitude: number, longitude: number}>>([])
 
   useEffect(() => {
     fetch("https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7")
@@ -58,8 +59,6 @@ function App() {
     return <div>Loading...</div>
   }
 
-  console.log(weather);
-
   return (
     <main className="main-container">
 
@@ -69,7 +68,15 @@ function App() {
       </div>
 
       <div className='search'>
-        <ReactSearchAutocomplete items={[]}></ReactSearchAutocomplete>
+        <ReactSearchAutocomplete items={cities} onSearch={keyword => {
+          fetch(`https://weatherapp.bitsky.workers.dev/location?query=${keyword}`)
+          .then(res => res.json())
+          .then(res => {
+            setCities((res.data as Array<any>).map((el, idx) => {
+              return {id: idx, latitude: el.latitude, longitude: el.longitude, name: el.label}
+            }))
+          })
+        }}></ReactSearchAutocomplete>
       </div>
       </div>
       <div className="current-temperature">
