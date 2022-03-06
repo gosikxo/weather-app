@@ -6,14 +6,14 @@ import Next5Days from "./components/Next5Days";
 import CurrentTemperature from './components/CurrentTemperature';
 import LocationAndDate from './components/LocationAndDate';
 import CurrentStats from './components/CurrentStats';
-import {ReactSearchAutocomplete} from 'react-search-autocomplete'
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
 
 function epochToIsoDate(epoch: number): Date {
   return new Date(epoch * 1000);
 }
 
 function formatDate(date: Date): string {
-  return `${date.getHours()}:${date.getMinutes() < 10 ? "0":""}${date.getMinutes()}`
+  return `${date.getHours()}:${date.getMinutes() < 10 ? "0" : ""}${date.getMinutes()}`
 }
 
 type Weather = {
@@ -24,15 +24,18 @@ type Weather = {
   uvIndex: number,
   humidity: number,
   feelsLike: number,
-  hourlyWeather: Array<{date: Date, temperature: number}>
+  hourlyWeather: Array<{ date: Date, temperature: number }>
 }
+
+type City = { id: number, name: string, latitude: number, longitude: number }
 
 function App() {
   const [weather, setWeather] = useState<Weather | null>(null)
-  const [cities, setCities] = useState<Array<{id: number, name: string, latitude: number, longitude: number}>>([])
+  const [selectedCity, selectCity] = useState<City>({ id: 1, latitude: 51.509648, name: "London, UK", longitude: -0.099076 })
+  const [cities, setCities] = useState<Array<City>>([])
 
   useEffect(() => {
-    fetch("https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7")
+    fetch(`https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=${selectedCity.latitude}&lon=${selectedCity.longitude}&cnt=7`)
       .then(res => res.json())
       .then(res => {
         setWeather({
@@ -44,16 +47,16 @@ function App() {
           uvIndex: res.current.uvi,
           humidity: res.current.humidity,
           feelsLike: res.current.feels_like,
-          hourlyWeather: (res.hourly as Array<{dt: number, temp: number}>).filter((item, idx) => {
-            if(idx < 7) {
+          hourlyWeather: (res.hourly as Array<{ dt: number, temp: number }>).filter((item, idx) => {
+            if (idx < 7) {
               return true;
             }
           }).map(item => {
-            return {date: epochToIsoDate(item.dt), temperature: item.temp}
+            return { date: epochToIsoDate(item.dt), temperature: item.temp }
           })
         })
       })
-  }, []);
+  }, [selectedCity]);
 
   if (weather == null) {
     return <div>Loading...</div>
@@ -62,26 +65,34 @@ function App() {
   return (
     <main className="main-container">
 
-    <div className = "location-and-search">
-      <div className="location-and-date">
-        <LocationAndDate location='London, UK' date='Sunday 4th August' />
-      </div>
+      <div className="location-and-search">
+        <div className="location-and-date">
+          <LocationAndDate location={selectedCity.name} date='Sunday 4th August' />
+        </div>
 
-      <div className='search'>
-        <ReactSearchAutocomplete items={cities} onSearch={keyword => {
-          fetch(`https://weatherapp.bitsky.workers.dev/location?query=${keyword}`)
-          .then(res => res.json())
-          .then(res => {
-            setCities((res.data as Array<any>).map((el, idx) => {
-              return {id: idx, latitude: el.latitude, longitude: el.longitude, name: el.label}
-            }))
-          })
-        }}></ReactSearchAutocomplete>
-      </div>
+        <div className='search'>
+          <ReactSearchAutocomplete items={cities}
+            onSelect={city => {
+              selectCity(city)
+            }}
+
+            onSearch={keyword => {
+              if (keyword.length === 0) {
+                return;
+              }
+              fetch(`https://weatherapp.bitsky.workers.dev/location?query=${keyword}`)
+                .then(res => res.json())
+                .then(res => {
+                  setCities((res.data as Array<any>).map((el, idx) => {
+                    return { id: idx, latitude: el.latitude, longitude: el.longitude, name: el.label }
+                  }))
+                })
+            }}></ReactSearchAutocomplete>
+        </div>
       </div>
       <div className="current-temperature">
         <CurrentTemperature weatherType="mostly-sunny" temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny" />
-    </div>
+      </div>
 
 
       <div className="current-stats">
