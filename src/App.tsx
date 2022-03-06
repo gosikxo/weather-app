@@ -31,7 +31,7 @@ function App() {
   const [weather, setWeather] = useState<Weather | null>(null)
 
   useEffect(() => {
-    fetch("https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7&appid=63720269397e341964deae216e3952b5")
+    fetch("https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7")
       .then(res => res.json())
       .then(res => {
         setWeather({
