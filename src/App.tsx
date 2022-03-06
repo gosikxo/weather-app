@@ -12,7 +12,7 @@ function epochToIsoDate(epoch: number): Date {
 }
 
 function formatDate(date: Date): string {
-  return `${date.getHours()}:${date.getMinutes()}`
+  return `${date.getHours()}:${date.getMinutes() < 10 ? "0":""}${date.getMinutes()}`
 }
 
 type Weather = {
@@ -30,7 +30,7 @@ function App() {
   const [weather, setWeather] = useState<Weather | null>(null)
 
   useEffect(() => {
-    fetch("https://api.openweathermap.org/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7&appid=63720269397e341964deae216e3952b5")
+    fetch("https://weatherapp.bitsky.workers.dev/data/2.5/onecall?units=metric&lat=51.509648&lon=-0.099076&cnt=7&appid=63720269397e341964deae216e3952b5")
       .then(res => res.json())
       .then(res => {
         setWeather({
@@ -80,7 +80,7 @@ function App() {
         <div className="weather-by-hour__container">
           {
             weather.hourlyWeather.map(item => {
-              return <WeatherByHour temperatureInCelsius={item.temperature} hour={formatDate(item.date)} weatherType='mostly-sunny'></WeatherByHour>
+              return <WeatherByHour temperatureInCelsius={item.temperature.toFixed(1)} hour={formatDate(item.date)} weatherType='mostly-sunny'></WeatherByHour>
             })
           }
         </div>

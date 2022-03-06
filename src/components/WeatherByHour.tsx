@@ -8,7 +8,7 @@ function WeatherTypeIcon(props:{weatherType: WeatherType}) {
   
 }
 
-export default function WeatherByHour(props: {hour:string, temperatureInCelsius: number, weatherType: WeatherType}) {
+export default function WeatherByHour(props: {hour:string, temperatureInCelsius: string, weatherType: WeatherType}) {
     return (
         <div className="weather-by-hour__item">
           <div className="weather-by-hour__hour">{props.hour}</div>
