@@ -6,6 +6,7 @@ import Next5Days from "./components/Next5Days";
 import CurrentTemperature from './components/CurrentTemperature';
 import LocationAndDate from './components/LocationAndDate';
 import CurrentStats from './components/CurrentStats';
+import {ReactSearchAutocomplete} from 'react-search-autocomplete'
 
 function epochToIsoDate(epoch: number): Date {
   return new Date(epoch * 1000);
@@ -62,13 +63,18 @@ function App() {
   return (
     <main className="main-container">
 
+    <div className = "location-and-search">
       <div className="location-and-date">
         <LocationAndDate location='London, UK' date='Sunday 4th August' />
       </div>
 
+      <div className='search'>
+        <ReactSearchAutocomplete items={[]}></ReactSearchAutocomplete>
+      </div>
+      </div>
       <div className="current-temperature">
         <CurrentTemperature weatherType="mostly-sunny" temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny" />
-      </div>
+    </div>
 
 
       <div className="current-stats">

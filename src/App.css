@@ -36,6 +36,13 @@ body {
 
 
 /* location-and-date */
+.location-and-search {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
 .location-and-date {
   width: 100%;
 }
@@ -46,6 +53,9 @@ body {
   font-weight: 600;
 }
 
+.search {
+  width: 250px;
+}
 
 
 /* current-temperature */
