@@ -24,10 +24,12 @@ type Weather = {
   uvIndex: number,
   humidity: number,
   feelsLike: number,
-  hourlyWeather: Array<{ date: Date, temperature: number }>
+  hourlyWeather: Array<{ date: Date, temperature: number }>,
+  dailyWeather: Array<{ dayOfTheWeek: string, date: string, temperature: number, uvIndex: number, feelsLike: number, windSpeed: number}>
 }
 
 type City = { id: number, name: string, latitude: number, longitude: number }
+
 
 function App() {
   const [weather, setWeather] = useState<Weather | null>(null)
@@ -53,6 +55,13 @@ function App() {
             }
           }).map(item => {
             return { date: epochToIsoDate(item.dt), temperature: item.temp }
+          }),
+          dailyWeather: (res.daily as Array<{dt: number, temp: {day: number}, uvi: number, feels_like: {day: number}, wind_speed: number}>).filter((item, idx) => {
+            if (idx < 6) {
+              return true;
+            }
+          }).map(item => {
+            return { temperature: item.temp.day, uvIndex: item.uvi }
           })
         })
       })
@@ -61,6 +70,8 @@ function App() {
   if (weather == null) {
     return <div>Loading...</div>
   }
+  
+  console.log(weather)
 
   return (
     <main className="main-container">
@@ -94,7 +105,6 @@ function App() {
         <CurrentTemperature weatherType="mostly-sunny" temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny" />
       </div>
 
-
       <div className="current-stats">
         <CurrentStats uvIndex={weather.uvIndex} humidity={weather.humidity} windSpeed={weather.windSpeed} feelsLike={weather.feelsLike.toFixed(1)} sunrise={formatDate(weather.sunriseTime)} sunset={formatDate(weather.sunsetTime)} />
       </div>
@@ -112,11 +122,11 @@ function App() {
       <div className="next-5-days">
         <h2 className="next-5-days__heading">Next 5 days</h2>
         <div className="next-5-days__container">
-          <Next5Days date='30/7' day='Tue' weatherType="mostly-sunny" temperatureInCelsiusLow={14} temperatureInCelsiusHigh={16} chanceOfRain={0} windSpeed={14} />
-          <Next5Days date='31/7' day='Wed' weatherType="sunny" temperatureInCelsiusLow={16} temperatureInCelsiusHigh={18} chanceOfRain={20} windSpeed={16} />
-          <Next5Days date='1/8' day='Thu' weatherType="mostly-sunny" temperatureInCelsiusLow={4} temperatureInCelsiusHigh={9} chanceOfRain={31} windSpeed={64} />
-          <Next5Days date='2/8' day='Fri' weatherType="mostly-sunny" temperatureInCelsiusLow={14} temperatureInCelsiusHigh={16} chanceOfRain={100} windSpeed={53} />
-          <Next5Days date='3/8' day='Sat' weatherType="sunny" temperatureInCelsiusLow={15} temperatureInCelsiusHigh={20} chanceOfRain={0} windSpeed={2} />
+          {
+          weather.dailyWeather.map(item => {
+            return <Next5Days date='30/7' day='Tue' weatherType="mostly-sunny" temperature={item.temperature.toFixed(1)} uvIndex={item.uvIndex.toFixed(0)} feelsLike={0} windSpeed={14} />
+          })
+         }
         </div>
       </div>
 

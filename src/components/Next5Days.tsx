@@ -8,7 +8,7 @@ function WeatherTypeIcon(props:{weatherType: WeatherType}) {
   
 }
 
-export default function Next5Days(props: {date:string, day: string, temperatureInCelsiusLow: number, temperatureInCelsiusHigh: number, chanceOfRain: number, weatherType: WeatherType, windSpeed: number}) {
+export default function Next5Days(props: {date:string, day: string, temperature: string, uvIndex: string, feelsLike: number, weatherType: WeatherType, windSpeed: number}) {
     return (
         <><div className="next-5-days__row">
 
@@ -22,18 +22,18 @@ export default function Next5Days(props: {date:string, day: string, temperatureI
             </div>
 
             <div className="next-5-days__low">
-                {props.temperatureInCelsiusLow}&deg;
-                <div className="next-5-days__label">Low</div>
+                {props.temperature}&deg;
+                <div className="next-5-days__label">Temperature</div>
             </div>
 
             <div className="next-5-days__high">
-                {props.temperatureInCelsiusHigh}&deg;
-                <div className="next-5-days__label">High</div>
+                {props.uvIndex}
+                <div className="next-5-days__label">UV Index</div>
             </div>
 
             <div className="next-5-days__rain">
-                {props.chanceOfRain}%
-                <div className="next-5-days__label">Rain</div>
+                {props.feelsLike}&deg;
+                <div className="next-5-days__label">Feels like</div>
             </div>
 
             <div className="next-5-days__wind">
