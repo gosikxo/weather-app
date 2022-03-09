@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import WeatherByHour from "./components/WeatherByHour";
 import Next5Days from "./components/Next5Days";
@@ -56,6 +55,7 @@ function App() {
             if (idx < 7) {
               return true;
             }
+            return false;
           }).map(item => {
             return { date: epochToIsoDate(item.dt), temperature: item.temp }
           }),
@@ -63,6 +63,7 @@ function App() {
             if (idx < 6) {
               return true;
             }
+            return false;
           }).map(item => {
             return { dayOfTheWeek:DateTime.fromJSDate(epochToIsoDate(item.dt)).toFormat("EEE"),  date:DateTime.fromJSDate(epochToIsoDate(item.dt)).toFormat("d/M"), temperature: item.temp.day, uvIndex: item.uvi, feelsLike: item.feels_like.day, windSpeed:item.wind_speed}
           })
