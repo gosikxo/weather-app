@@ -6,7 +6,8 @@ import Next5Days from "./components/Next5Days";
 import CurrentTemperature from './components/CurrentTemperature';
 import LocationAndDate from './components/LocationAndDate';
 import CurrentStats from './components/CurrentStats';
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import { DateTime } from "luxon";
 
 function epochToIsoDate(epoch: number): Date {
   return new Date(epoch * 1000);
@@ -24,6 +25,7 @@ type Weather = {
   uvIndex: number,
   humidity: number,
   feelsLike: number,
+  date: Date,
   hourlyWeather: Array<{ date: Date, temperature: number }>,
   dailyWeather: Array<{ dayOfTheWeek: string, date: string, temperature: number, uvIndex: number, feelsLike: number, windSpeed: number}>
 }
@@ -49,6 +51,7 @@ function App() {
           uvIndex: res.current.uvi,
           humidity: res.current.humidity,
           feelsLike: res.current.feels_like,
+          date: DateTime.fromJSDate(epochToIsoDate(res.current.dt)).toLocaleString(DateTime.DATE_HUGE),
           hourlyWeather: (res.hourly as Array<{ dt: number, temp: number }>).filter((item, idx) => {
             if (idx < 7) {
               return true;
@@ -61,7 +64,7 @@ function App() {
               return true;
             }
           }).map(item => {
-            return { temperature: item.temp.day, uvIndex: item.uvi }
+            return { dayOfTheWeek:DateTime.fromJSDate(epochToIsoDate(item.dt)).toFormat("EEE"),  date:DateTime.fromJSDate(epochToIsoDate(item.dt)).toFormat("d/M"), temperature: item.temp.day, uvIndex: item.uvi, feelsLike: item.feels_like.day, windSpeed:item.wind_speed}
           })
         })
       })
@@ -78,7 +81,7 @@ function App() {
 
       <div className="location-and-search">
         <div className="location-and-date">
-          <LocationAndDate location={selectedCity.name} date='Sunday 4th August' />
+          <LocationAndDate location={selectedCity.name} date={weather.date} />
         </div>
 
         <div className='search'>
@@ -124,7 +127,7 @@ function App() {
         <div className="next-5-days__container">
           {
           weather.dailyWeather.map(item => {
-            return <Next5Days date='30/7' day='Tue' weatherType="mostly-sunny" temperature={item.temperature.toFixed(1)} uvIndex={item.uvIndex.toFixed(0)} feelsLike={0} windSpeed={14} />
+            return <Next5Days date={item.date} day={item.dayOfTheWeek} weatherType="mostly-sunny" temperature={item.temperature.toFixed(1)} uvIndex={item.uvIndex.toFixed(0)} feelsLike={item.feelsLike.toFixed(0)} windSpeed={item.windSpeed} />
           })
          }
         </div>

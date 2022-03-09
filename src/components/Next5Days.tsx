@@ -8,7 +8,7 @@ function WeatherTypeIcon(props:{weatherType: WeatherType}) {
   
 }
 
-export default function Next5Days(props: {date:string, day: string, temperature: string, uvIndex: string, feelsLike: number, weatherType: WeatherType, windSpeed: number}) {
+export default function Next5Days(props: {date:string, day: string, temperature: string, uvIndex: string, feelsLike: string, weatherType: WeatherType, windSpeed: number}) {
     return (
         <><div className="next-5-days__row">
 
