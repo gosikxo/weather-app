@@ -1,14 +1,6 @@
-type WeatherType = 'mostly-sunny' | 'sunny';
+import { WeatherIcon } from "./WeatherIcon";
 
-function WeatherTypeIcon(props:{weatherType: WeatherType}) {
-  if (props.weatherType === "mostly-sunny") {
-        return  <img src="icons/mostly-sunny.svg" alt="Mostly sunny" />
-  }
-  return  <img src="icons/sunny.svg" alt="Sunny" />;
-  
-}
-
-export default function Next5Days(props: {date:string, day: string, temperature: string, uvIndex: string, feelsLike: string, weatherType: WeatherType, windSpeed: number}) {
+export default function Next5Days(props: {date:string, day: string, temperature: string, uvIndex: string, feelsLike: string, weatherIconId: string, windSpeed: number}) {
     return (
         <><div className="next-5-days__row">
 
@@ -18,7 +10,7 @@ export default function Next5Days(props: {date:string, day: string, temperature:
             </div>
 
             <div className="next-5-days__icon">
-                <WeatherTypeIcon weatherType={props.weatherType}/>
+                 <WeatherIcon iconId={props.weatherIconId} size={80}/>
             </div>
 
             <div className="next-5-days__low">

@@ -26,7 +26,8 @@ type Weather = {
   feelsLike: number,
   date: Date,
   hourlyWeather: Array<{ date: Date, temperature: number }>,
-  dailyWeather: Array<{ dayOfTheWeek: string, date: string, temperature: number, uvIndex: number, feelsLike: number, windSpeed: number}>
+  dailyWeather: Array<{ dayOfTheWeek: string, date: string, temperature: number, uvIndex: number, feelsLike: number, windSpeed: number}>,
+  weatherIconId: string
 }
 
 type City = { id: number, name: string, latitude: number, longitude: number }
@@ -51,6 +52,7 @@ function App() {
           humidity: res.current.humidity,
           feelsLike: res.current.feels_like,
           date: DateTime.fromJSDate(epochToIsoDate(res.current.dt)).toLocaleString(DateTime.DATE_HUGE),
+          weatherIconId: res.current.weather[0].icon,
           hourlyWeather: (res.hourly as Array<{ dt: number, temp: number }>).filter((item, idx) => {
             if (idx < 7) {
               return true;
@@ -91,6 +93,8 @@ function App() {
               selectCity(city)
             }}
 
+            inputDebounce={200}
+
             onSearch={keyword => {
               if (keyword.length === 0) {
                 return;
@@ -106,7 +110,7 @@ function App() {
         </div>
       </div>
       <div className="current-temperature">
-        <CurrentTemperature weatherType="mostly-sunny" temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny" />
+        <CurrentTemperature weatherIconId={weather.weatherIconId} temperature={weather.temperature.toFixed(1)} sunny="Mostly Sunny" />
       </div>
 
       <div className="current-stats">
@@ -118,7 +122,7 @@ function App() {
         <div className="weather-by-hour__container">
           {
             weather.hourlyWeather.map(item => {
-              return <WeatherByHour temperatureInCelsius={item.temperature.toFixed(1)} hour={formatDate(item.date)} weatherType='mostly-sunny'></WeatherByHour>
+              return <WeatherByHour temperatureInCelsius={item.temperature.toFixed(1)} hour={formatDate(item.date)} weatherIconId={weather.weatherIconId}></WeatherByHour>
             })
           }
         </div>
@@ -128,7 +132,7 @@ function App() {
         <div className="next-5-days__container">
           {
           weather.dailyWeather.map(item => {
-            return <Next5Days date={item.date} day={item.dayOfTheWeek} weatherType="mostly-sunny" temperature={item.temperature.toFixed(1)} uvIndex={item.uvIndex.toFixed(0)} feelsLike={item.feelsLike.toFixed(0)} windSpeed={item.windSpeed} />
+            return <Next5Days date={item.date} day={item.dayOfTheWeek} weatherIconId={weather.weatherIconId} temperature={item.temperature.toFixed(1)} uvIndex={item.uvIndex.toFixed(0)} feelsLike={item.feelsLike.toFixed(0)} windSpeed={item.windSpeed} />
           })
          }
         </div>
