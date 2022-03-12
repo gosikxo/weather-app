@@ -37,7 +37,7 @@ export default function Next5Days(props: {date:string, day: string, temperature:
             </div>
 
             <div className="next-5-days__wind">
-                {props.windSpeed}mph
+                {props.windSpeed} m/s
                 <div className="next-5-days__label">Wind</div>
             </div>
 
