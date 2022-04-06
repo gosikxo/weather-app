@@ -77,7 +77,6 @@ function App() {
     return <div>Loading...</div>
   }
   
-  console.log(weather)
 
   return (
     <main className="main-container">
@@ -136,6 +135,9 @@ function App() {
           })
          }
         </div>
+      </div>
+      <div className="footer">
+        <p>Made with ❤️ by <a href="https://github.com/gosikxo">Gosia Brozek</a>. Used template from <a href="https://github.com/JonUK/responsive-web-weather-app">Jon Keeping</a>. </p>
       </div>
 
     </main>

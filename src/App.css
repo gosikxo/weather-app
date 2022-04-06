@@ -248,3 +248,15 @@ body {
     order: -1;
   }
 }
+
+.footer {
+  width: 100%;
+  text-align: center;
+}
+
+.footer a {
+  color:white;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
